@@ -14,14 +14,14 @@ const createItem = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  const getUser = await prisma.user.findUnique({
+  const getUser = await prisma.user.findFirst({
     where: { email: email },
     select: {
       id: true,
     },
   });
 
-  const newItem = await prisma.note.create({
+  const newItem = await prisma.item.create({
     data: {
       name,
       description,
