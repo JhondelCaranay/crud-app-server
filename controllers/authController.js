@@ -41,6 +41,46 @@ const register = asyncHandler(async (req, res) => {
   res.status(201).json({ message: "User created" });
 });
 
+// @desc Login
+// @route POST /auth/login
+// @access Public
+const login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  const foundUser = await prisma.user.findUnique({
+    where: { email: email },
+  });
+
+  // check if use exists and active
+  if (!foundUser) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  const match = await bcrypt.compare(password, foundUser.password);
+
+  if (!match) return res.status(401).json({ message: "Unauthorized" });
+
+  const accessToken = getAccessToken(foundUser.email, foundUser.roles);
+
+  const refreshToken = getRefreshToken(foundUser.email);
+
+  // Create secure cookie with refresh token
+  res.cookie("jwt", refreshToken, {
+    httpOnly: true, //accessible only by web server
+    secure: true, //https
+    sameSite: "strict", //cross-site cookie
+    maxAge: 7 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
+  });
+
+  // Send accessToken containing username and roles
+  res.json({ accessToken });
+});
+
 module.exports = {
   register,
+  login,
 };
