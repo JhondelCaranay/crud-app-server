@@ -64,7 +64,7 @@ const login = asyncHandler(async (req, res) => {
 
   if (!match) return res.status(401).json({ message: "Unauthorized" });
 
-  const accessToken = getAccessToken(foundUser.email, foundUser.roles);
+  const accessToken = getAccessToken(foundUser.email, foundUser.role);
 
   const refreshToken = getRefreshToken(foundUser.email);
 
@@ -80,7 +80,23 @@ const login = asyncHandler(async (req, res) => {
   res.json({ accessToken });
 });
 
+const getCurrentUser = asyncHandler(async (req, res) => {
+  const { email } = req.user;
+
+  const user = await prisma.user.findFirst({
+    where: { email: email },
+    select: {
+      name: true,
+      email: true,
+      role: true,
+    },
+  });
+
+  res.json(user);
+});
+
 module.exports = {
   register,
   login,
+  getCurrentUser,
 };
