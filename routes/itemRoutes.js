@@ -7,7 +7,7 @@ router.use(verifyJWT);
 
 router.get("/", itemController.getAllUserItem);
 
-// router.get("/:id", itemController.getItemById);
+router.get("/:id", itemController.getItemById);
 
 router.post("/", itemController.createItem);
 

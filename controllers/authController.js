@@ -85,6 +85,10 @@ const login = asyncHandler(async (req, res) => {
 // @access Private
 const getCurrentUser = asyncHandler(async (req, res) => {
   const { email } = req.user;
+  console.log(
+    "🚀 ~ file: authController.js:88 ~ getCurrentUser ~ email:",
+    email
+  );
 
   const user = await prisma.user.findFirst({
     where: { email: email },
