@@ -14,13 +14,13 @@ const getAllUserItem = asyncHandler(async (req, res) => {
     select: {
       id: true,
     },
-    orderBy: {
-      createdAt: "desc",
-    },
   });
 
   const items = await prisma.item.findMany({
     where: { userId: getUser.id },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   res.json(items);
