@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3500;
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", require("./routes/root"));
-// app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/auth", require("./routes/authRoutes"));
 
 // 404 page
 app.use("*", require("./routes/page404"));
