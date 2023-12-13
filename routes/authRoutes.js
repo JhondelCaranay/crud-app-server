@@ -6,6 +6,6 @@ const router = require("express").Router();
 
 router.post("/login", loginLimiter, authController.login);
 router.post("/register", authController.register);
-router.post("/profile", verifyJWT, authController.getCurrentUser);
+router.get("/profile", verifyJWT, authController.getCurrentUser);
 
 module.exports = router;
