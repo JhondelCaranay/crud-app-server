@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 // @desc    Create new user
 // @route   POST /api/auth/register
-// @access  Private
+// @access  Public
 const register = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -42,7 +42,7 @@ const register = asyncHandler(async (req, res) => {
 });
 
 // @desc Login
-// @route POST /auth/login
+// @route POST /api/auth/login
 // @access Public
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -80,6 +80,9 @@ const login = asyncHandler(async (req, res) => {
   res.json({ accessToken });
 });
 
+// @desc Login
+// @route POST /api/auth/profile
+// @access Private
 const getCurrentUser = asyncHandler(async (req, res) => {
   const { email } = req.user;
 

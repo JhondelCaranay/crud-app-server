@@ -15,6 +15,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", require("./routes/root"));
 app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/items", require("./routes/itemRoutes"));
 
 // 404 page
 app.use("*", require("./routes/page404"));
