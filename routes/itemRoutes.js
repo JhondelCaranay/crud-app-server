@@ -11,7 +11,7 @@ router.get("/", itemController.getAllUserItem);
 
 router.post("/", itemController.createItem);
 
-// router.patch("/:id", itemController.updateItem);
+router.patch("/:id", itemController.updateItem);
 
 router.delete("/:id", itemController.deleteItem);   
 
