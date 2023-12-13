@@ -3,8 +3,28 @@ const asyncHandler = require("express-async-handler");
 
 const prisma = new PrismaClient();
 
+// @desc Gell user items
+// @route POST /api/items
+// @access Private
+const getAllUserItem = asyncHandler(async (req, res) => {
+  const { email } = req.user;
+
+  const getUser = await prisma.user.findFirst({
+    where: { email: email },
+    select: {
+      id: true,
+    },
+  });
+
+  const items = await prisma.item.findMany({
+    where: { userId: getUser.id },
+  });
+
+  res.json(items);
+});
+
 // @desc Create new item
-// @route POST /notes
+// @route POST /api/items
 // @access Private
 const createItem = asyncHandler(async (req, res) => {
   const { name, description } = req.body;
@@ -34,4 +54,5 @@ const createItem = asyncHandler(async (req, res) => {
 
 module.exports = {
   createItem,
+  getAllUserItem,
 };

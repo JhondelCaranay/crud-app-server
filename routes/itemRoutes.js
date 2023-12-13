@@ -5,7 +5,7 @@ const router = require("express").Router();
 
 router.use(verifyJWT);
 
-// router.get("/", itemController.getAllItem);
+router.get("/", itemController.getAllUserItem);
 
 // router.get("/:id", itemController.getItemById);
 
