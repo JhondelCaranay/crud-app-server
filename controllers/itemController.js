@@ -52,7 +52,41 @@ const createItem = asyncHandler(async (req, res) => {
   res.status(201).json(newItem);
 });
 
+// @desc Delete new item
+// @route DELETE /api/items/:id
+// @access Private
+const deleteItem = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { email } = req.user;
+
+  const getUser = await prisma.user.findFirst({
+    where: { email: email },
+    select: {
+      id: true,
+    },
+  });
+
+  const item = await prisma.item.findUnique({
+    where: { id: Number(id) },
+  });
+
+  if (!item) {
+    return res.status(404).json({ message: "Item not found" });
+  }
+
+  if (item.userId !== getUser.id) {
+    return res.status(401).json({ message: "Not authorized" });
+  }
+
+  await prisma.item.delete({
+    where: { id: Number(id) },
+  });
+
+  res.json({ message: "Item removed" });
+});
+
 module.exports = {
   createItem,
   getAllUserItem,
+  deleteItem,
 };
